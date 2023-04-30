@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f073ccd6-7839-4fd5-b0d6-d71ec92bee70"
+      }
+    },
+    "owner": "spangcouver"
   }
 }
