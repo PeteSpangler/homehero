@@ -3,60 +3,41 @@ import { View, Text } from "react-native";
 import { Appbar, Button, useTheme } from "react-native-paper";
 import { StackNavigationProp } from "@react-navigation/stack";
 import globalStyles from "../styles/globalStyles";
+import theme from "../styles/theme";
 
 interface HomeProps {
 	loggedIn: boolean;
-	onLogin: () => void;
-	onRegister: () => void;
 	navigation: StackNavigationProp<any>;
 }
 
-const HomePage: React.FC<HomeProps> = ({ loggedIn, onLogin, onRegister, navigation }) => {
+const HomePage: React.FC<HomeProps> = ({ loggedIn, navigation }) => {
 	const [showWelcomePage, setShowWelcomePage] = useState(false);
-	const [showProfilePage, setShowProfilePage] = useState(false);
-	const [showGroupPage, setShowGroupPage] = useState(false);
-	const [showChoresPage, setShowChoresPage] = useState(false);
-	const [showAssignPage, setShowAssignPage] = useState(false);
-
-	const theme = useTheme();
 
 	const handleProfilePress = () => {
-		setShowProfilePage(!showProfilePage);
 		navigation.navigate("Profile");
 	};
 
 	const handleGroupPress = () => {
-		setShowGroupPage(!showGroupPage);
 		navigation.navigate("Group");
 	};
 
 	const handleChoresPress = () => {
-		setShowChoresPage(!showChoresPage);
 		navigation.navigate("Chores");
 	};
 
 	const handleAssignPress = () => {
-		setShowAssignPage(!showAssignPage);
 		navigation.navigate("Assign");
 	};
 
 	const handleLogin = () => {
-		// Perform login logic here
-		// Assuming login is successful, set loggedIn to true
-		onLogin();
 		setShowWelcomePage(true);
 	};
 
 	const handleRegister = () => {
-		// Perform register logic here
-		// Assuming registration is successful, set loggedIn to true
-		onRegister();
 		setShowWelcomePage(true);
 	};
 
 	const handleLogout = () => {
-		// Perform logout logic here
-		// Set loggedIn to false
 		setShowWelcomePage(false);
 	};
 
@@ -83,10 +64,6 @@ const HomePage: React.FC<HomeProps> = ({ loggedIn, onLogin, onRegister, navigati
 					</Button>
 				</View>
 			)}
-			{/* {showProfilePage && <ProfilePage />}
-			{showGroupPage && <GroupPage />}
-			{showChoresPage && <ChoresPage />}
-			{showAssignPage && <AssignPage />} */}
 		</View>
 	);
 };

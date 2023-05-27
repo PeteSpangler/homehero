@@ -21,11 +21,7 @@ import AssignPage from "./components/assignpage";
 const Stack = createStackNavigator();
 
 type RootStackParamList = {
-	Home: { loggedIn: boolean; onLogin: () => void; onRegister: () => void };
-	Profile: undefined;
-	Group: undefined;
-	Chores: undefined;
-	Assign: undefined;
+	Home: { loggedIn: boolean };
 };
 
 export default function App() {
@@ -52,7 +48,14 @@ export default function App() {
 					<Stack.Screen
 						name="Home"
 						component={HomePage}
-						initialParams={{ loggedIn, onLogin: handleLogin, onRegister: handleRegister }}
+						options={({ navigation }) => ({
+							headerShown: false,
+							title: "Home",
+							// Pass the function as an option using navigation.setOptions
+							// instead of including it in the params
+							onLogin: () => navigation.setOptions({ loggedIn: true }),
+							onRegister: () => navigation.setOptions({ loggedIn: true }),
+						})}
 					/>
 					<Stack.Screen name="Profile" component={ProfilePage} />
 					<Stack.Screen name="Group" component={GroupPage} />
