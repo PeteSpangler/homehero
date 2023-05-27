@@ -1,15 +1,44 @@
 import React, { useState } from "react";
-import { View, Text, Button } from "react-native";
-import { Appbar } from "react-native-paper";
+import { View, Text } from "react-native";
+import { Appbar, Button, useTheme } from "react-native-paper";
+import { StackNavigationProp } from "@react-navigation/stack";
+import globalStyles from "../styles/globalStyles";
 
 interface HomeProps {
 	loggedIn: boolean;
 	onLogin: () => void;
 	onRegister: () => void;
+	navigation: StackNavigationProp<any>;
 }
 
-const HomePage: React.FC<HomeProps> = ({ loggedIn, onLogin, onRegister }) => {
+const HomePage: React.FC<HomeProps> = ({ loggedIn, onLogin, onRegister, navigation }) => {
 	const [showWelcomePage, setShowWelcomePage] = useState(false);
+	const [showProfilePage, setShowProfilePage] = useState(false);
+	const [showGroupPage, setShowGroupPage] = useState(false);
+	const [showChoresPage, setShowChoresPage] = useState(false);
+	const [showAssignPage, setShowAssignPage] = useState(false);
+
+	const theme = useTheme();
+
+	const handleProfilePress = () => {
+		setShowProfilePage(!showProfilePage);
+		navigation.navigate("Profile");
+	};
+
+	const handleGroupPress = () => {
+		setShowGroupPage(!showGroupPage);
+		navigation.navigate("Group");
+	};
+
+	const handleChoresPress = () => {
+		setShowChoresPage(!showChoresPage);
+		navigation.navigate("Chores");
+	};
+
+	const handleAssignPress = () => {
+		setShowAssignPage(!showAssignPage);
+		navigation.navigate("Assign");
+	};
 
 	const handleLogin = () => {
 		// Perform login logic here
@@ -33,28 +62,31 @@ const HomePage: React.FC<HomeProps> = ({ loggedIn, onLogin, onRegister }) => {
 
 	return (
 		<View style={{ flex: 1 }}>
-			<Appbar.Header>
-				<Appbar.Content title="My App" />
-				{loggedIn && <Appbar.Action icon="logout" onPress={handleLogout} />}
-			</Appbar.Header>
-
-			{!loggedIn && (
-				<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-					<Text>Please login or register</Text>
-					<Button title="Login" onPress={handleLogin} />
-					<Button title="Register" onPress={handleRegister} />
+			{showWelcomePage ? (
+				<View style={[globalStyles.container, { backgroundColor: theme.colors.primary }]}>
+					<Text style={globalStyles.welcomeText}>Become a Home Hero!</Text>
+					<Appbar style={globalStyles.appbar}>
+						<Appbar.Action icon="account" onPress={handleProfilePress} />
+						<Appbar.Action icon="account-group" onPress={handleGroupPress} />
+						<Appbar.Action icon="format-list-bulleted" onPress={handleChoresPress} />
+						<Appbar.Action icon="clipboard-text" onPress={handleAssignPress} />
+					</Appbar>
+				</View>
+			) : (
+				<View style={[globalStyles.loginContainer, { backgroundColor: theme.colors.secondary }]}>
+					<Text style={globalStyles.loginText}>Please log in or register.</Text>
+					<Button onPress={handleLogin} color={theme.colors.primary}>
+						Login
+					</Button>
+					<Button onPress={handleRegister} color={theme.colors.primary}>
+						Register
+					</Button>
 				</View>
 			)}
-
-			{loggedIn && showWelcomePage && (
-				<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-					<Text>Welcome to the app!</Text>
-					<Button title="My Profile" onPress={() => console.log("Navigate to My Profile")} />
-					<Button title="My Group" onPress={() => console.log("Navigate to My Group")} />
-					<Button title="My Chores" onPress={() => console.log("Navigate to My Chores")} />
-					<Button title="Assign Chore" onPress={() => console.log("Navigate to Assign Chore")} />
-				</View>
-			)}
+			{/* {showProfilePage && <ProfilePage />}
+			{showGroupPage && <GroupPage />}
+			{showChoresPage && <ChoresPage />}
+			{showAssignPage && <AssignPage />} */}
 		</View>
 	);
 };
